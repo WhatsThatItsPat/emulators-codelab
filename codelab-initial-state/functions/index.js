@@ -42,11 +42,12 @@ exports.calculateCart = functions
           // console.log(`itemData`, itemData);
 
           if (itemData.price) {
-            itemCount += 1;
-            totalPrice += itemData.price;
+            const quantity = (itemData.quantity) ? itemData.quantity : 1;
+            itemCount += quantity;
+            totalPrice += (itemData.price * quantity);
           }
           
-        })
+        });
 
         await cartRef.update({
           totalPrice,
