@@ -192,30 +192,30 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
     await resetData(admin, REAL_FIREBASE_PROJECT_ID);
   });
 
-  it("should sum the cost of their items", async () => {
+  it("should sum the cost of their items", (done) => {
     if (REAL_FIREBASE_PROJECT_ID === "changeme") {
       throw new Error("Please change the REAL_FIREBASE_PROJECT_ID at the top of the test file");
     }
 
     const db = firebase
-        .initializeAdminApp({ projectId: REAL_FIREBASE_PROJECT_ID })
-        .firestore();
+      .initializeAdminApp({ projectId: REAL_FIREBASE_PROJECT_ID })
+      .firestore();
 
     // Setup: Initialize cart
     const aliceCartRef = db.doc("carts/alice")
-    await aliceCartRef.set({ ownerUID: "alice", totalPrice: 0 });
+    aliceCartRef.set({ ownerUID: "alice", totalPrice: 0 });
 
     //  Trigger `calculateCart` by adding items to the cart
     const aliceItemsRef = aliceCartRef.collection("items");
-    await aliceItemsRef.doc("doc1").set({name: "nectarine", price: 2.99});
-    await aliceItemsRef.doc("doc2").set({ name: "grapefruit", price: 6.99 });
-    await aliceItemsRef.doc("doc3").set({ name: "banana", price: 0.50, quantity: 5 });
+    aliceItemsRef.doc("doc1").set({name: "nectarine", price: 2.99});
+    aliceItemsRef.doc("doc2").set({ name: "grapefruit", price: 6.99 });
+    aliceItemsRef.doc("doc3").set({ name: "banana", price: 0.50, quantity: 5 });
 
     // Listen for every update to the cart. Every time an item is added to
     // the cart's subcollection of items, the function updates `totalPrice`
     // and `itemCount` attributes on the cart.
     // Returns a function that can be called to unsubscribe the listener.
-    await new Promise((resolve) => {
+    new Promise((resolve) => {
       const unsubscribe = aliceCartRef.onSnapshot(snap => {
         // If the function worked, these will be cart's final attributes.
         const expectedCount = 7;
@@ -226,7 +226,7 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
         if (snap.exists && snap.data().itemCount === expectedCount && snap.data().totalPrice === expectedTotal) {
           // Call the function returned by `onSnapshot` to unsubscribe from updates
           unsubscribe();
-          resolve();
+          done();
         }
       });
     });
