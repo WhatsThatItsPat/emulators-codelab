@@ -28,8 +28,6 @@ exports.calculateCart = functions
       }
 
       try {
-        let totalPrice = 0;
-        let itemCount = 0;
 
         const cartRef = db
           .collection("carts")
@@ -37,25 +35,37 @@ exports.calculateCart = functions
 
         const itemsSnap = await cartRef.collection("items").get();
 
-        itemsSnap.docs.forEach(item => {
-          const itemData = item.data();
-          // console.log(`itemData`, itemData);
+        // itemsSnap.docs.forEach(item => {
+        //   const itemData = item.data();
+        //   // console.log(`itemData`, itemData);
 
-          if (itemData.price) {
-            const quantity = (itemData.quantity) ? itemData.quantity : 1;
-            itemCount += quantity;
-            totalPrice += (itemData.price * quantity);
-          }
+        //   if (itemData.price) {
+        //     const quantity = (itemData.quantity) ? itemData.quantity : 1;
+        //     itemCount += quantity;
+        //     totalPrice += (itemData.price * quantity);
+        //   }
           
+        // });
+
+        const totalPriceAndItemCount = itemsSnap.docs.reduce((acc, currentItem) => {
+          const { price, quantity = 1 } = currentItem.data();
+          console.log({price, quantity});
+          return price ? {
+            totalPrice: ( price * quantity ) + acc.totalPrice,
+            itemCount: quantity + acc.itemCount
+          } : acc;
+        }, {
+          totalPrice: 0,
+          itemCount: 0
         });
 
-        await cartRef.update({
-          totalPrice,
-          itemCount
-        });
+        await cartRef.update(totalPriceAndItemCount);
 
         // OPTIONAL LOGGING HERE
-        console.log("Cart total successfully recalculated: ", totalPrice);
+        console.log(
+          "Cart total successfully recalculated: ",
+          totalPriceAndItemCount
+        );
 
       } catch(err) {
         // OPTIONAL LOGGING HERE
