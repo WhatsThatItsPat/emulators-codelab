@@ -32,6 +32,8 @@ const aliceAuth = {
   email: "alice@example.com"
 };
 
+const alicesCartPath = `carts/${aliceAuth.uid}`;
+
 const bobAuth = {
   uid: "bob",
   email: "bob@example.com"
@@ -84,41 +86,42 @@ describe("shopping carts", () => {
   });
 
   it('can be created and updated by the cart owner', async () => {
+
     // Alice can create her own cart
-    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").set({
-      ownerUID: "alice",
+    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).set({
+      // ownerUID: "alice",
       total: 0
     }));
 
     // Bob can't create Alice's cart
-    await firebase.assertFails(bobDb.doc("carts/alicesCart").set({
-      ownerUID: "alice",
+    await firebase.assertFails(bobDb.doc(alicesCartPath).set({
+      // ownerUID: "alice",
       total: 0
     }));
 
     // Alice can update her own cart with a new total
-    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").update({
+    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).update({
       total: 1
     }));
 
     // Bob can't update Alice's cart with a new total
-    await firebase.assertFails(bobDb.doc("carts/alicesCart").update({
+    await firebase.assertFails(bobDb.doc(alicesCartPath).update({
       total: 1
     }));
   });
 
   it("can be read only by the cart owner", async () => {
     // Setup: Create Alice's cart as admin
-    await admin.doc("carts/alicesCart").set({
-      ownerUID: "alice",
+    await admin.doc(alicesCartPath).set({
+      // ownerUID: "alice",
       total: 0
     });
 
     // Alice can read her own cart
-    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart").get());
+    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).get());
 
     // Bob can't read Alice's cart
-    await firebase.assertFails(bobDb.doc("carts/alicesCart").get());
+    await firebase.assertFails(bobDb.doc(alicesCartPath).get());
   });
 });
 
@@ -139,9 +142,9 @@ describe("shopping cart items", async () => {
 
   before(async () => {
     // Create Alice's cart
-    const aliceCartRef = admin.doc("carts/alicesCart");
+    const aliceCartRef = admin.doc(alicesCartPath);
     await aliceCartRef.set({
-      ownerUID: "alice",
+      // ownerUID: "alice",
       total: 0
     });
 
@@ -158,21 +161,21 @@ describe("shopping cart items", async () => {
 
   it("can be read only by the cart owner", async () => {
     // Alice can read items in her own cart
-    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart/items/milk").get());
+    await firebase.assertSucceeds(aliceDb.doc(`${alicesCartPath}/items/milk`).get());
 
     // Bob can't read items in alice's cart
-    await firebase.assertFails(bobDb.doc("carts/alicesCart/items/milk").get())
+    await firebase.assertFails(bobDb.doc(`${alicesCartPath}/items/milk`).get())
   });
 
   it("can be added only by the cart owner",  async () => {
     // Alice can add an item to her own cart
-    await firebase.assertSucceeds(aliceDb.doc("carts/alicesCart/items/lemon").set({
+    await firebase.assertSucceeds(aliceDb.doc(`${alicesCartPath}/items/lemon`).set({
       name: "lemon",
       price: 0.99
     }));
 
     // Bob can't add an item to alice's cart
-    await firebase.assertFails(bobDb.doc("carts/alicesCart/items/lemon").set({
+    await firebase.assertFails(bobDb.doc(`${alicesCartPath}/items/lemon`).set({
       name: "lemon",
       price: 0.99
     }));
@@ -202,8 +205,11 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
       .firestore();
 
     // Setup: Initialize cart
-    const aliceCartRef = db.doc("carts/alice")
-    await aliceCartRef.set({ ownerUID: "alice", totalPrice: 0 });
+    const aliceCartRef = db.doc(alicesCartPath)
+    await aliceCartRef.set({
+      // ownerUID: "alice",
+      totalPrice: 0
+    });
 
     //  Trigger `calculateCart` by adding items to the cart
     const aliceItemsRef = aliceCartRef.collection("items");
