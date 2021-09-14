@@ -177,6 +177,12 @@ class HomePage {
 
   addToCart(id, itemData) {
     console.log("addToCart", id, JSON.stringify(itemData));
+
+    if (this.auth.currentUser === null) {
+      this.showError("You must be signed in!");
+      return;
+    }
+
     return this.db
       .collection("carts")
       .doc(this.auth.currentUser.uid)
