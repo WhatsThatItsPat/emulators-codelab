@@ -32,7 +32,7 @@ const aliceAuth = {
   email: "alice@example.com"
 };
 
-const alicesCartPath = `carts/${aliceAuth.uid}`;
+const aliceCartPath = `carts/${aliceAuth.uid}`;
 
 const bobAuth = {
   uid: "bob",
@@ -67,6 +67,10 @@ after(() => {
 // Unit test the security rules
 describe("shopping carts", () => {
 
+  const adminDb = firebase.initializeAdminApp({
+    projectId: TEST_FIREBASE_PROJECT_ID
+  }).firestore();
+
   const aliceDb = firebase.initializeTestApp({
     projectId: TEST_FIREBASE_PROJECT_ID,
     auth: aliceAuth
@@ -77,56 +81,61 @@ describe("shopping carts", () => {
     auth: bobAuth
   }).firestore();
 
-  const admin = firebase.initializeAdminApp({
-    projectId: TEST_FIREBASE_PROJECT_ID
-  }).firestore();
-
   after(async () => {
-    await resetData(admin, TEST_FIREBASE_PROJECT_ID);
+    await resetData(adminDb, TEST_FIREBASE_PROJECT_ID);
   });
 
   it('can be created and updated by the cart owner', async () => {
 
     // Alice can create her own cart
-    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).set({
-      // ownerUID: "alice",
-      total: 0
-    }));
+    await firebase.assertSucceeds(
+      aliceDb.doc(aliceCartPath).set({
+        // ownerUID: "alice",
+        total: 0
+      })
+    );
 
     // Bob can't create Alice's cart
-    await firebase.assertFails(bobDb.doc(alicesCartPath).set({
-      // ownerUID: "alice",
-      total: 0
-    }));
+    await firebase.assertFails(
+      bobDb.doc(aliceCartPath).set({
+        // ownerUID: "alice",
+        total: 0
+      })
+    );
 
     // Alice can update her own cart with a new total
-    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).update({
-      total: 1
-    }));
+    await firebase.assertSucceeds(
+      aliceDb.doc(aliceCartPath).update({
+        total: 1
+      })
+    );
 
     // Bob can't update Alice's cart with a new total
-    await firebase.assertFails(bobDb.doc(alicesCartPath).update({
-      total: 1
-    }));
+    await firebase.assertFails(
+      bobDb.doc(aliceCartPath).update({
+        total: 1
+      })
+    );
+
   });
 
   it("can be read only by the cart owner", async () => {
     // Setup: Create Alice's cart as admin
-    await admin.doc(alicesCartPath).set({
+    await adminDb.doc(aliceCartPath).set({
       // ownerUID: "alice",
       total: 0
     });
 
     // Alice can read her own cart
-    await firebase.assertSucceeds(aliceDb.doc(alicesCartPath).get());
+    await firebase.assertSucceeds(aliceDb.doc(aliceCartPath).get());
 
     // Bob can't read Alice's cart
-    await firebase.assertFails(bobDb.doc(alicesCartPath).get());
+    await firebase.assertFails(bobDb.doc(aliceCartPath).get());
   });
 });
 
 describe("shopping cart items", async () => {
-  const admin = firebase.initializeAdminApp({ 
+  const adminDb = firebase.initializeAdminApp({ 
     projectId: TEST_FIREBASE_PROJECT_ID 
   }).firestore();
 
@@ -142,7 +151,7 @@ describe("shopping cart items", async () => {
 
   before(async () => {
     // Create Alice's cart
-    const aliceCartRef = admin.doc(alicesCartPath);
+    const aliceCartRef = adminDb.doc(aliceCartPath);
     await aliceCartRef.set({
       // ownerUID: "alice",
       total: 0
@@ -156,30 +165,41 @@ describe("shopping cart items", async () => {
   });
 
   after(async () => {
-    await resetData(admin, TEST_FIREBASE_PROJECT_ID);
+    await resetData(adminDb, TEST_FIREBASE_PROJECT_ID);
   });
 
   it("can be read only by the cart owner", async () => {
     // Alice can read items in her own cart
-    await firebase.assertSucceeds(aliceDb.doc(`${alicesCartPath}/items/milk`).get());
+    await firebase.assertSucceeds(
+      aliceDb.doc(`${aliceCartPath}/items/milk`).get()
+    );
 
     // Bob can't read items in alice's cart
-    await firebase.assertFails(bobDb.doc(`${alicesCartPath}/items/milk`).get())
+    await firebase.assertFails(
+      bobDb.doc(`${aliceCartPath}/items/milk`).get()
+    );
   });
 
   it("can be added only by the cart owner",  async () => {
+
     // Alice can add an item to her own cart
-    await firebase.assertSucceeds(aliceDb.doc(`${alicesCartPath}/items/lemon`).set({
-      name: "lemon",
-      price: 0.99
-    }));
+    await firebase.assertSucceeds(
+      aliceDb.doc(`${aliceCartPath}/items/lemon`).set({
+        name: "lemon",
+        price: 0.99
+      })
+    );
 
     // Bob can't add an item to alice's cart
-    await firebase.assertFails(bobDb.doc(`${alicesCartPath}/items/lemon`).set({
-      name: "lemon",
-      price: 0.99
-    }));
+    await firebase.assertFails(
+      bobDb.doc(`${aliceCartPath}/items/lemon`).set({
+        name: "lemon",
+        price: 0.99
+      })
+    );
+
   });
+
 });
 
 
@@ -187,12 +207,12 @@ describe("shopping cart items", async () => {
 // Cloud Function test
 
 describe("adding an item to the cart recalculates the cart total. ", () => {
-  const admin = firebase.initializeAdminApp({ 
+  const adminDb = firebase.initializeAdminApp({ 
     projectId: REAL_FIREBASE_PROJECT_ID 
   }).firestore();
 
   after(async () => {
-    await resetData(admin, REAL_FIREBASE_PROJECT_ID);
+    await resetData(adminDb, REAL_FIREBASE_PROJECT_ID);
   });
 
   it("should sum the cost of their items", async () => {
@@ -200,12 +220,12 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
       throw new Error("Please change the REAL_FIREBASE_PROJECT_ID at the top of the test file");
     }
 
-    const db = firebase
-      .initializeAdminApp({ projectId: REAL_FIREBASE_PROJECT_ID })
-      .firestore();
+    // const db = firebase
+    //   .initializeAdminApp({ projectId: REAL_FIREBASE_PROJECT_ID })
+    //   .firestore();
 
     // Setup: Initialize cart
-    const aliceCartRef = db.doc(alicesCartPath)
+    const aliceCartRef = adminDb.doc(aliceCartPath)
     await aliceCartRef.set({
       // ownerUID: "alice",
       totalPrice: 0
@@ -213,7 +233,7 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
 
     //  Trigger `calculateCart` by adding items to the cart
     const aliceItemsRef = aliceCartRef.collection("items");
-    await aliceItemsRef.doc("doc1").set({name: "nectarine", price: 2.99});
+    await aliceItemsRef.doc("doc1").set({ name: "nectarine", price: 2.99 });
     await aliceItemsRef.doc("doc2").set({ name: "grapefruit", price: 6.99 });
     await aliceItemsRef.doc("doc3").set({ name: "banana", price: 0.50, quantity: 5 });
     await aliceItemsRef.doc("doc4").set({ name: "no price", quantity: 1000 });
@@ -230,7 +250,11 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
   
         // When the `itemCount`and `totalPrice` match the expectations for the
         // two items added, the promise resolves, and the test passes.
-        if (snap.exists && snap.data().itemCount === expectedCount && snap.data().totalPrice === expectedTotal) {
+        if (
+          snap.exists
+          && snap.data().itemCount === expectedCount
+          && snap.data().totalPrice === expectedTotal
+        ) {
           // Call the function returned by `onSnapshot` to unsubscribe from updates
           unsubscribe();
           resolve();
