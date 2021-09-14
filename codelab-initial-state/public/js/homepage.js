@@ -28,6 +28,12 @@ export async function onDocumentReady(firebaseApp) {
   const auth = firebaseApp.auth();
   const db = firebaseApp.firestore();
 
+  if (location.hostname === "localhost") {
+    console.log("localhost detected!");
+    auth.useEmulator("http://localhost:9099");
+    db.useEmulator("localhost", 8080);
+  }
+
   const homePage = new HomePage(db, auth);
   mount(document.body, homePage);
 }
