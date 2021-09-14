@@ -1,0 +1,19 @@
+{
+  "name": "revolutionary-wallet.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978749,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "f24286fa-04af-4a6d-b334-7573f18295d4"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.748Z",
+  "updated": "2021-09-14T18:26:18.749Z",
+  "size": 1704,
+  "md5Hash": "5auqrGcCm8SkPujbH4N0Hg==",
+  "crc32c": "4232302402"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "intelligent-gadget.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978733,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "a47fef64-1b1e-4195-b1b9-497f0baf568b"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.732Z",
+  "updated": "2021-09-14T18:26:18.732Z",
+  "size": 1712,
+  "md5Hash": "m/4sc9c/dZqSjbmKPrM41A==",
+  "crc32c": "2950221657"
+}

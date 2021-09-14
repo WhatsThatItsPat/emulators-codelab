@@ -1,0 +1,19 @@
+{
+  "name": "practical-wallet.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978758,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "de62e8f8-3e6c-4b64-b130-eb7c9c7d9865"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.757Z",
+  "updated": "2021-09-14T18:26:18.757Z",
+  "size": 1764,
+  "md5Hash": "UotzsBnVQyalrLpEgJ0WfA==",
+  "crc32c": "2198190669"
+}

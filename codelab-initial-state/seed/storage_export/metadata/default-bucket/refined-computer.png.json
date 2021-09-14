@@ -1,0 +1,19 @@
+{
+  "name": "refined-computer.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978721,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "2ef1b093-8654-4b8f-8834-ed92cf1b0a9a"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.720Z",
+  "updated": "2021-09-14T18:26:18.720Z",
+  "size": 1894,
+  "md5Hash": "p4QKk9UztMa7ovWWH84MMw==",
+  "crc32c": "2226880588"
+}

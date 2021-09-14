@@ -1,0 +1,19 @@
+{
+  "name": "hipster-dog-toy.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978769,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "4b040164-7371-476c-a596-38c56cc5cad4"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.768Z",
+  "updated": "2021-09-14T18:26:18.768Z",
+  "size": 1928,
+  "md5Hash": "CjAdxu2XSfXovtqDFM0YJw==",
+  "crc32c": "372628397"
+}

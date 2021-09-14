@@ -1,0 +1,19 @@
+{
+  "name": "hipster-computer.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978761,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "e5755505-c5dc-4ea4-b3fb-181c44d8947d"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.760Z",
+  "updated": "2021-09-14T18:26:18.760Z",
+  "size": 1759,
+  "md5Hash": "h0cuyB7SSRnkTYLHXUh9TA==",
+  "crc32c": "4264483088"
+}

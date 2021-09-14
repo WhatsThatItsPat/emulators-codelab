@@ -1,0 +1,19 @@
+{
+  "name": "practical-dog-toy.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978743,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "1c52d63e-ecf4-4800-9c54-59292925725d"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.742Z",
+  "updated": "2021-09-14T18:26:18.743Z",
+  "size": 1944,
+  "md5Hash": "T94dWEnph7/sJAoNTsIvTg==",
+  "crc32c": "3226858829"
+}

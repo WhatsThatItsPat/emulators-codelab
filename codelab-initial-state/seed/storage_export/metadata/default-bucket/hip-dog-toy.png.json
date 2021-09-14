@@ -1,0 +1,19 @@
+{
+  "name": "hip-dog-toy.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978774,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "8773a2b6-ea24-4d2b-80fa-4ab1fc44fdbc"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.773Z",
+  "updated": "2021-09-14T18:26:18.773Z",
+  "size": 2045,
+  "md5Hash": "uhJMg+1abz+Sj3AkAz8mlQ==",
+  "crc32c": "1854809300"
+}

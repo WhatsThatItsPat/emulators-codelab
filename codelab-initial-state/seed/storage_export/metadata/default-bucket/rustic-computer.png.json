@@ -1,0 +1,19 @@
+{
+  "name": "rustic-computer.png",
+  "bucket": "default-bucket",
+  "contentType": "image/png",
+  "metageneration": 1,
+  "generation": 1631643978728,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "cb654fee-9040-4f19-bf8f-0d1100e9c2f5"
+  ],
+  "timeCreated": "2021-09-14T18:26:18.727Z",
+  "updated": "2021-09-14T18:26:18.727Z",
+  "size": 1951,
+  "md5Hash": "CGFDP8I07JHp5qfmxiYRuQ==",
+  "crc32c": "1864880787"
+}
