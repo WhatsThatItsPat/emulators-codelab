@@ -209,6 +209,7 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
     const aliceItemsRef = aliceCartRef.collection("items");
     await aliceItemsRef.doc("doc1").set({name: "nectarine", price: 2.99});
     await aliceItemsRef.doc("doc2").set({ name: "grapefruit", price: 6.99 });
+    await aliceItemsRef.doc("doc3").set({ name: "banana", price: 0.50, quantity: 5 });
 
     // Listen for every update to the cart. Every time an item is added to
     // the cart's subcollection of items, the function updates `totalPrice`
@@ -217,8 +218,8 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
     await new Promise((resolve) => {
       const unsubscribe = aliceCartRef.onSnapshot(snap => {
         // If the function worked, these will be cart's final attributes.
-        const expectedCount = 2;
-        const expectedTotal = 9.98;
+        const expectedCount = 7;
+        const expectedTotal = 12.48;
   
         // When the `itemCount`and `totalPrice` match the expectations for the
         // two items added, the promise resolves, and the test passes.
