@@ -21,11 +21,11 @@ const REAL_FIREBASE_PROJECT_ID = "changeme";
 
 const firebase = require("@firebase/rules-unit-testing");
 
-const seedItems = {
-  "chocolate": 4.99,
-  "coffee beans": 12.99,
-  "milk": 5.99
-};
+// const seedItems = {
+//   "chocolate": 4.99,
+//   "coffee beans": 12.99,
+//   "milk": 5.99
+// };
 
 const aliceAuth = {
   uid: "alice",
@@ -146,10 +146,10 @@ describe("shopping cart items", async () => {
     });
 
     // Create items subcollection in Alice's Cart
-    const alicesItemsRef = aliceCartRef.collection("items");
-    for (const name of Object.keys(seedItems)) {
-      await alicesItemsRef.doc(name).set({ value: seedItems[name] });
-    }
+    // const alicesItemsRef = aliceCartRef.collection("items");
+    // for (const name of Object.keys(seedItems)) {
+    //   await alicesItemsRef.doc(name).set({ value: seedItems[name] });
+    // }
   });
 
   after(async () => {
@@ -222,7 +222,7 @@ describe.skip("adding an item to the cart recalculates the cart total. ", () => 
           // Call the function returned by `onSnapshot` to unsubscribe from updates
           unsubscribe();
           resolve();
-        };
+        }
       });
     });
   });
