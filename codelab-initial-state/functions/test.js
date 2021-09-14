@@ -210,6 +210,7 @@ describe("adding an item to the cart recalculates the cart total. ", () => {
     await aliceItemsRef.doc("doc1").set({name: "nectarine", price: 2.99});
     await aliceItemsRef.doc("doc2").set({ name: "grapefruit", price: 6.99 });
     await aliceItemsRef.doc("doc3").set({ name: "banana", price: 0.50, quantity: 5 });
+    await aliceItemsRef.doc("doc4").set({ name: "no price", quantity: 1000 });
 
     // Listen for every update to the cart. Every time an item is added to
     // the cart's subcollection of items, the function updates `totalPrice`
