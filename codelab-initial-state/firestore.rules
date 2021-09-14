@@ -3,14 +3,12 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // User's cart metadata
     match /carts/{cartID} {
-      // TODO: Change these! Anyone can read or write.
       allow create: if request.auth.uid == request.resource.data.ownerUID;
       allow read, update, delete: if request.auth.uid == resource.data.ownerUID;
     }
 
     // Items inside the user's cart
     match /carts/{cartID}/items/{itemID} {
-      // TODO: Change these! Anyone can read or write.
       allow read, write: if get(
         /databases/$(database)/documents/carts/$(cartID)
       ).data.ownerUID == request.auth.uid;
@@ -20,6 +18,7 @@ service cloud.firestore {
     // items but never write them.
     match /items/{itemID} {
       allow read: if true;
+      // TODO: Consider write rule that ensures prices are numbers
     }
   }
 }
