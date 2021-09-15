@@ -115,7 +115,8 @@ class HomePage {
     const cartRef = this.db.collection("carts").doc(uid);
     await cartRef.set(
       {
-        ownerUID: uid
+        // ownerUID: uid,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       },
       { merge: true }
     );
